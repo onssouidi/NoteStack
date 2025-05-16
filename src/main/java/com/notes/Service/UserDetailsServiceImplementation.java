@@ -19,7 +19,7 @@ public class UserDetailsServiceImplementation{
 
             return User.builder()
                     .username(user.getLogin())
-                    .password(user.getPassword()) // already encoded in registerUser
+                    .password(user.getPassword()) 
                     .roles("USER")
                     .build();
         };
