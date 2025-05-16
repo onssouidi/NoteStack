@@ -12,8 +12,8 @@ spring:
   datasource:
     url: jdbc:h2:mem:TestDB
     driver-class-name: org.h2.Driver
-    username: admin
-    password: admin
+    username: admin //Just used for testing
+    password: admin //Just used for testing
 
   h2:
     console:
