@@ -73,11 +73,11 @@ public class HomeController {
     public String editNote(@PathVariable Long id, @ModelAttribute("currentUser") UserModel user, Model model) {
         try {
             NoteModel note = noteService.getNoteByIdAndUser(id, user);
-            model.addAttribute("note", note); // This makes sure the note is passed to the form
-            return "UpdateNote"; // This will return the UpdateNote.html view
+            model.addAttribute("note", note); 
+            return "UpdateNote"; 
         } catch (Exception e) {
             // Handle exceptions
-            return "redirect:/notes/list?page=0"; // Redirect to notes list if there's an error
+            return "redirect:/notes/list?page=0";
         }
     }
 
