@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="title">
+    <meta charset="UTF-8" />
+    <title th:text="#{note.edit.title}">Edit Note</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('https://media-hosting.imagekit.io/3bd8b1cb2fdc49ab/v1064-22.jpg?Expires=1841852510&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=LpiR3I-ocV7vQUSTdNQLCpwqlO6YEgIySBPVDZ4vEILMlW~pRIXG-L8OiZp41AWKOXMrPRSJVQpuVYwtVDH0sfVhiewL0qEXU02yc~c8-vu-c6hUNhZg2y1lXYyoQbhQUGvc73q1x13oGToTJjrYJbpRhj3A4hpEJLZjRLDTSWDh3Hm0Lz5a-KpjfI6GLZIyIrXdwQB74OF6mPzVZi9kiEXJqZ3e1gL~1krrXVULwnwbBQEX6Je1PNSH0FqD1mlgk5795vwwcpOsW8XhI9VHUj5CFdLKLiVYl0JPJRe-ztgqZK4R6nqf1GF31rprJ2EWou2cTM2PDKa3tJmeWkfxmQ__') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            max-width: 600px;
+            margin: 60px auto;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #040302;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #040302;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        .btn-primary {
+            background-color: #6d3fb1;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #452285;
+        }
+
+        .btn-secondary {
+            background-color: #ccc;
+            border: none;
+            color: #333;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .text-danger {
+            color: #452285;
+            font-size: 0.9em;
+        }
+
+        .alert-danger {
+            color: white;
+            background-color: #6d3fb1;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            color: black;
+        }
+
+        footer a {
+            color: #040302;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+        header {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            height: 50px;
+        }
+        .nav-buttons button {
+            background-color: #6d3fb1;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin-left: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .nav-buttons button:hover {
+            background-color: #452285;
+        }
+        main {
+            padding: 40px 20px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <img th:src="@{/images/logo.png}" alt="NoteStack Logo" class="logo" />
+    <div class="nav-buttons">
+        <a th:href="@{/notes/list}"><button th:text="#{button.viewnotes}">View Notes</button></a>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" th:text="#{button.logout}" class="btn btn-danger">Logout</button>
+        </form>
+    </div>
+</header>
+<main>
+    <div class="container">
+        <h2 th:text="#{note.edit.heading}">Edit Note</h2>
+
+        <form th:action="@{/notes/update}" th:object="${note}" method="post">
+            <input type="hidden" th:field="*{noteId}" />
+
+            <div th:if="${#fields.hasGlobalErrors()}">
+                <div class="alert alert-danger">
+                    <ul>
+                        <li th:each="err : ${#fields.globalErrors()}" th:text="${err}"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div>
+                <label for="title" th:text="#{note.label.title}">Title</label>
+                <input type="text" id="title" th:field="*{title}" th:placeholder="#{note.placeholder.title}" required />
+                <div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+            </div>
+
+            <div>
+                <label for="content" th:text="#{note.label.content}">Content</label>
+                <textarea id="content" th:field="*{content}" th:placeholder="#{note.placeholder.content}" required></textarea>
+                <div class="text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
+            </div>
+
+            <button type="submit" class="btn-primary" th:text="#{button.update}">Update Note</button>
+            <a th:href="@{/notes/list(page=0)}" class="btn-secondary" th:text="#{button.cancel}">Cancel</a>
+        </form>
+    </div>
+</main>
+<footer>
+    <h2 th:text="#{home.chooselanguage}">Switch Language</h2>
+    <a th:href="@{/register(lang='en')}">English</a> |
+    <a th:href="@{/register(lang='fr')}">French</a>
+</footer>
+
+</body>
+</html>

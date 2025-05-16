@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="title">
+    <meta charset="UTF-8">
+    <title th:text="#{note.create.title}">Créer une note</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('https://media-hosting.imagekit.io/3bd8b1cb2fdc49ab/v1064-22.jpg?Expires=1841852510&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=LpiR3I-ocV7vQUSTdNQLCpwqlO6YEgIySBPVDZ4vEILMlW~pRIXG-L8OiZp41AWKOXMrPRSJVQpuVYwtVDH0sfVhiewL0qEXU02yc~c8-vu-c6hUNhZg2y1lXYyoQbhQUGvc73q1x13oGToTJjrYJbpRhj3A4hpEJLZjRLDTSWDh3Hm0Lz5a-KpjfI6GLZIyIrXdwQB74OF6mPzVZi9kiEXJqZ3e1gL~1krrXVULwnwbBQEX6Je1PNSH0FqD1mlgk5795vwwcpOsW8XhI9VHUj5CFdLKLiVYl0JPJRe-ztgqZK4R6nqf1GF31rprJ2EWou2cTM2PDKa3tJmeWkfxmQ__') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+
+        .note-form-container {
+            max-width: 500px;
+            margin: 80px auto;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #040302;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #040302;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #6d3fb1;
+            border: none;
+            color: white;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #452285;
+        }
+        footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            color: black;
+        }
+
+        footer a {
+            color: #040302;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+        header {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            height: 50px;
+        }
+        .nav-buttons button {
+            background-color: #6d3fb1;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin-left: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .nav-buttons button:hover {
+            background-color: #452285;
+        }
+        main {
+            padding: 40px 20px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <img th:src="@{/images/logo.png}" alt="NoteStack Logo" class="logo" />
+    <div class="nav-buttons">
+        <a th:href="@{/notes/list}"><button th:text="#{button.viewnotes}">View Notes</button></a>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" th:text="#{button.logout}" class="btn btn-danger">Logout</button>
+        </form>
+    </div>
+</header>
+<main>
+    <div class="note-form-container">
+        <h2 th:text="#{note.create.heading}">Créer une nouvelle note</h2>
+        <form th:action="@{/notes/create}" method="post" th:object="${note}">
+            <label for="title" th:text="#{note.label.title}">Titre:</label>
+            <input type="text" id="Title" th:field="*{title}" th:placeholder="#{note.placeholder.title}" required/>
+
+            <label for="content" th:text="#{note.label.content}">Contenu:</label>
+            <textarea id="Content" th:field="*{content}" th:placeholder="#{note.placeholder.content}" required></textarea>
+
+            <button type="submit" th:text="#{button.create}">Créer</button>
+        </form>
+    </div>
+    <footer>
+        <h2 th:text="#{home.chooselanguage}">Switch Language</h2>
+        <a th:href="@{/notes/create(lang='en')}">English</a> |
+        <a th:href="@{/notes/create(lang='fr')}">French</a>
+    </footer>
+</main>
+</body>
+</html>

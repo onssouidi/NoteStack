@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <title th:fragment="title" th:text="#{notes.title}">My Notes</title>
+    <style>
+        body {
+            background: url('https://media-hosting.imagekit.io/3bd8b1cb2fdc49ab/v1064-22.jpg?Expires=1841852510&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=LpiR3I-ocV7vQUSTdNQLCpwqlO6YEgIySBPVDZ4vEILMlW~pRIXG-L8OiZp41AWKOXMrPRSJVQpuVYwtVDH0sfVhiewL0qEXU02yc~c8-vu-c6hUNhZg2y1lXYyoQbhQUGvc73q1x13oGToTJjrYJbpRhj3A4hpEJLZjRLDTSWDh3Hm0Lz5a-KpjfI6GLZIyIrXdwQB74OF6mPzVZi9kiEXJqZ3e1gL~1krrXVULwnwbBQEX6Je1PNSH0FqD1mlgk5795vwwcpOsW8XhI9VHUj5CFdLKLiVYl0JPJRe-ztgqZK4R6nqf1GF31rprJ2EWou2cTM2PDKa3tJmeWkfxmQ__') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-weight: bold;
+            color: #040302;
+        }
+
+        .btn-success {
+            background-color: #6d3fb1;
+            border-color: #040302;
+        }
+
+        .btn-success:hover {
+            background-color: #452285;
+        }
+
+        .card {
+            border: none;
+            border-left: 5px solid #6d3fb1;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            color: #040302;
+        }
+
+        .alert-info {
+            background-color: #e9f7ef;
+            color: #6d3fb1;
+            border-left: 4px solid #6d3fb1;
+        }
+        footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            color: black;
+        }
+
+        footer a {
+            color: #040302;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+        header {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            height: 50px;
+        }
+        .nav-buttons button {
+            background-color: #6d3fb1;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin-left: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .nav-buttons button:hover {
+            background-color: #452285;
+        }
+        main {
+            padding: 40px 20px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <img th:src="@{/images/logo.png}" alt="NoteStack Logo" class="logo" />
+    <div class="nav-buttons">
+        <a th:href="@{/notes/list}"><button th:text="#{button.viewnotes}">View Notes</button></a>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" th:text="#{button.logout}" class="btn btn-danger">Logout</button>
+        </form>
+    </div>
+</header>
+<main>
+    <div class="container mt-5">
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <h2 th:text="#{notes.heading}">My Notes</h2>
+            </div>
+            <div class="col-md-4 text-md-right">
+                <a href="create" class="btn btn-success" th:text="#{button.addnote}">Add Note</a>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <form th:action="@{search}" method="get" class="form-inline">
+                    <input type="text" name="keyword" class="form-control mr-2 w-75" th:placeholder="#{search.placeholder}" />
+                    <button type="submit" class="btn btn-outline-primary" th:text="#{button.search}">Search</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Message if no notes -->
+        <div class="row" th:if="${#lists.isEmpty(notes)}">
+            <div class="col-12">
+                <div class="alert alert-info" th:text="#{notes.none}">No notes available.</div>
+            </div>
+        </div>
+
+        <!-- Notes list -->
+        <div class="row" th:each="note : ${notes}">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${note.title}">Note Title</h5>
+                        <p class="card-text" th:text="${note.content}">Note content...</p>
+                        <a th:href="@{'/notes/edit/' + ${note.noteId}}" class="btn btn-primary btn-sm" th:text="#{button.edit}">Edit</a>
+                        <a th:href="@{'/notes/delete/' + ${note.noteId}}" class="btn btn-danger btn-sm" th:text="#{button.delete}">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer>
+    <h2 th:text="#{home.chooselanguage}">Switch Language</h2>
+    <a th:href="@{/notes/list(lang='en')}">English</a> |
+    <a th:href="@{/notes/list(lang='fr')}">French</a>
+</footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="#{login.login}">Please Log In</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://media-hosting.imagekit.io/3bd8b1cb2fdc49ab/v1064-22.jpg?Expires=1841852510&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=LpiR3I-ocV7vQUSTdNQLCpwqlO6YEgIySBPVDZ4vEILMlW~pRIXG-L8OiZp41AWKOXMrPRSJVQpuVYwtVDH0sfVhiewL0qEXU02yc~c8-vu-c6hUNhZg2y1lXYyoQbhQUGvc73q1x13oGToTJjrYJbpRhj3A4hpEJLZjRLDTSWDh3Hm0Lz5a-KpjfI6GLZIyIrXdwQB74OF6mPzVZi9kiEXJqZ3e1gL~1krrXVULwnwbBQEX6Je1PNSH0FqD1mlgk5795vwwcpOsW8XhI9VHUj5CFdLKLiVYl0JPJRe-ztgqZK4R6nqf1GF31rprJ2EWou2cTM2PDKa3tJmeWkfxmQ__') no-repeat center center fixed;
+            background-size: cover;
+            background-position: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        h1 {
+            color: black;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            width: 300px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid black;
+            border-radius: 5px;
+            margin-top: 10px;
+            background-color: #f9fff9;
+        }
+
+        input[type="submit"] {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background-color: #6d3fb1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #452285;
+        }
+
+        div[th\\:if] {
+            margin-top: 10px;
+            color: white;
+            background-color: rgb(69, 34, 133);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            width: 300px;
+        }
+        header {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            height: 50px;
+        }
+
+        .nav-buttons a {
+            display: inline-block;
+            background-color: #6d3fb1;
+            color: white;
+            padding: 8px 16px;
+            margin-left: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .nav-buttons a:hover {
+            background-color: #452285;
+        }
+
+        main {
+            padding: 40px 20px;
+            margin-top: 100px;
+            border-radius: 10px;
+            display: inline-block;
+            text-align: center;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: black;
+            flex: 1;
+        }
+        footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            color: black;
+        }
+
+        footer a {
+            color: #040302;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <img th:src="@{/images/logo.png}" alt="NoteStack Logo" class="logo" />
+    <div class="nav-buttons">
+        <a th:href="@{/login}" th:text="#{button.login}">Login</a>
+        <a th:href="@{/register}" th:text="#{button.register}">Register</a>
+    </div>
+</header>
+
+<main>
+    <h1 th:text="#{login.login}">Please Log In</h1>
+
+    <div th:if="${param.error}" th:text="#{login.invalid}">Invalid username and password.</div>
+    <div th:if="${param.logout}" th:text="#{login.logout}">You have been logged out.</div>
+
+    <form th:action="@{/login}" method="post" th:object="${registerRequest}">
+        <div>
+            <label th:text="#{home.Username}">Username:</label>
+            <input type="text" name="username" placeholder="Username"/>
+        </div>
+        <div>
+            <label th:text="#{home.Password}">Password:</label>
+            <input type="password" name="password" placeholder="Password"/>
+        </div>
+        <input type="submit" th:value="#{button.login}" />
+    </form>
+</main>
+
+<footer>
+    <h2 th:text="#{home.chooselanguage}">Switch Language</h2>
+    <a th:href="@{/login(lang='en')}">English</a> |
+    <a th:href="@{/login(lang='fr')}">French</a>
+</footer>
+</body>
+</html>
+
